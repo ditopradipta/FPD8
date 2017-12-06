@@ -27,6 +27,37 @@ void do_move(char *from, char *to)
   }
 }
 
+int main(int argc, char *argv[])
+{
+  struct stat sb;
+  char fulldest[200];
 
+  if (argc<3) {
+    fprintf(stderr, "Usage: mv file1 file, or mv file file ... dir\n");
+    exit(1);
+  }
+
+  // See if the last argument is a directory
+  if ((stat(argv[argc-1], &sb)==0) && ((sb.st_mode & S_IFMT) == S_IFDIR)) {
+
+    // Yes, link each argument into that directory
+    for (int i= 1; i < argc-1; i++) {
+
+      // Append the from file's name to the directory name
+      strcpy(fulldest, argv[argc-1]);
+      strcat(fulldest, "/");
+      strcat(fulldest, argv[i]);
+      do_move(argv[i], fulldest);
+    }
+  } else {
+    // We should only have two files
+    if (argc != 3) {
+      fprintf(stderr, "Usage: mv file1 file, or mv file file ... dir\n");
+      exit(1);
+    }
+    do_move(argv[1], argv[2]);
+  }
+  exit(0);
+}
 
 
