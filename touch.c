@@ -13,6 +13,7 @@ if(argc < 2){
 
 for(int i=0;i<=argc;i++)
 {
+int f;	
 	if((f = open(argv[i], O_CREATE | O_RDWR)) < 0)
 	{
 		printf(1, "touch: %s tidak berhasil dibuat\n", argv[i]);
