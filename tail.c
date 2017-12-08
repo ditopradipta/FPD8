@@ -5,8 +5,8 @@ char buf[1024];
 void tail(char* filepath) 
 { int fd, n, m, count; 
   char *p, *q; 
-  memset(buf, 0, sizeof(char)*1024); 	//			
-  if((fd = open(filepath, 0)) < 0){ 	//
+  memset(buf, 0, sizeof(char)*1024); 				
+  if((fd = open(filepath, 0)) < 0){ 	
 	printf(1, "tail: cannot open %s\n", filepath); 
 	exit(); 
   } 
@@ -19,6 +19,12 @@ void tail(char* filepath)
  	    *q = 0;
              p = q+1;
              count++; 
+	  } 
+	  if(p == buf) 
+             m = 0; 
+	  if(m > 0){ 
+		m -= p - buf; 
+		memmove(buf, p, m); //copy m times from p to buf
 	  } 
   } 
 close(fd);
